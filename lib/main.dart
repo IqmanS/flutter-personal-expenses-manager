@@ -30,7 +30,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("Personal Expenses"),
+        title: const Text("Personal Expenses"),
         centerTitle: true,
       ),
       body: Padding(
@@ -40,12 +40,12 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Container(
                 child: TransactionChart(),
                 height: 180,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               // TransactionInput(),
               // Expanded(
               //     child: transactionList(

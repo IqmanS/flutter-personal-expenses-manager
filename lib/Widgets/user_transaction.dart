@@ -13,29 +13,31 @@ class UserTransactions extends StatefulWidget {
 class _UserTransactionsState extends State<UserTransactions> {
   @override
   Widget build(BuildContext context) {
-    final List<Transaction> _userTransaction = [
+    final List<Transaction> userTransaction = [
       Transaction(id: "1", title: "Shoes", amount: 69, date: DateTime.now()),
       Transaction(id: "2", title: "File", amount: 649, date: DateTime.now()),
-      Transaction(id: "2", title: "MAGIC", amount: 649, date: DateTime.now()),
-      Transaction(id: "3", title: "Shoes", amount: 689, date: DateTime.now())
+      Transaction(id: "2", title: "MAGIC", amount: 79, date: DateTime.now()),
+      Transaction(id: "3", title: "PANTS", amount: 689, date: DateTime.now())
     ];
-    void _addNewTransaction(String title, double amount) {
+    void addNewTransaction(String title, double amount) {
       final newTrans = Transaction(
-          title: title,
-          amount: amount,
-          date: DateTime.now(),
-          id: DateTime.now().toString());
+        title: title,
+        amount: amount,
+        date: DateTime.now(),
+        id: DateTime.now().toString(),
+      );
       setState(() {
-        //_userTransaction.add(newTrans);
+        userTransaction.add(newTrans);
+        print(userTransaction);
       });
     }
 
     return Column(
       children: [
-        TransactionInput(),
-        SizedBox(height: 8),
+        TransactionInput(addNewTransaction),
+        const SizedBox(height: 8),
         transactionList(
-          transactions: _userTransaction,
+          transactions: userTransaction,
         ),
       ],
     );

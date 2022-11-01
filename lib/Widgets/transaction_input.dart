@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TransactionInput extends StatelessWidget {
-  const TransactionInput({Key? key}) : super(key: key);
+  final Function addTrans;
+
+  TransactionInput(this.addTrans);
 
   @override
   Widget build(BuildContext context) {
@@ -15,23 +17,28 @@ class TransactionInput extends StatelessWidget {
           children: [
             TextField(
               controller: titleController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Title",
               ),
             ),
             TextField(
               controller: amountController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Amount",
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             ElevatedButton(
-              child: Text("Submit"),
-              onPressed: () {},
-            )
+              child: const Text("Add Transaction"),
+              onPressed: () {
+                addTrans(
+                  titleController.text,
+                  double.parse(amountController.text),
+                );
+              },
+            ),
           ],
         ),
       ),

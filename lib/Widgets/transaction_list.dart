@@ -8,6 +8,7 @@ class transactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(transactions);
     return Column(
       children: transactions.map((trans) {
         return Container(
