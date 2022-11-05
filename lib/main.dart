@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:personal_expense/Widgets/add_button.dart';
 import 'package:personal_expense/Widgets/chart.dart';
+import 'package:personal_expense/Widgets/transaction_input.dart';
 
-import 'Widgets/user_transaction.dart';
+import 'Model/transaction.dart';
+import 'Widgets/transaction_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,26 +17,70 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Personal Expenses',
       theme: ThemeData.dark(),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Personal Expenses'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   MyHomePage({super.key, required this.title});
   final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<Transaction> userTransaction = [
+    Transaction(id: "1", title: "Shoes", amount: 69, date: DateTime.now()),
+    Transaction(id: "2", title: "File", amount: 649, date: DateTime.now()),
+    Transaction(id: "2", title: "Magic", amount: 79, date: DateTime.now()),
+    Transaction(id: "3", title: "Pants", amount: 689, date: DateTime.now())
+  ];
+  void _addNewTransaction(String title, double amount) {
+    final newTrans = Transaction(
+      title: title,
+      amount: amount,
+      date: DateTime.now(),
+      id: DateTime.now().toString(),
+    );
+    setState(() {
+      userTransaction.add(newTrans);
+      print("New Transaction Added");
+      print(userTransaction);
+    });
+  }
+
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (bctx) {
+        return GestureDetector(
+          onTap: () {},
+          child: TransactionInput(_addNewTransaction),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            onPressed: () => _startAddNewTransaction(context),
+            icon: Icon(Icons.add),
+          )
+        ],
         elevation: 0,
         title: const Text("Personal Expenses"),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -47,16 +92,23 @@ class MyHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               // TransactionInput(),
-              // Expanded(
-              //     child: transactionList(
-              //   transactions: transaction,
-              // )),
-              UserTransactions(),
+              TransactionList(
+                transactions: userTransaction,
+              ),
+              //UserTransactions(),
             ],
           ),
         ),
       ),
-      floatingActionButton: AddButton(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.grey.shade700,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () => _startAddNewTransaction(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

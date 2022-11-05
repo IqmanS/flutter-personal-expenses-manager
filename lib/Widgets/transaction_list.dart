@@ -1,28 +1,35 @@
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:personal_expense/Model/transaction.dart';
 
-class transactionList extends StatelessWidget {
-  transactionList({Key? key, required this.transactions}) : super(key: key);
+class TransactionList extends StatelessWidget {
+  TransactionList({Key? key, required this.transactions}) : super(key: key);
 
-  final List<Transaction> transactions;
-
+  List<Transaction> transactions;
+  //TransactionList(this.transactions);
   @override
   Widget build(BuildContext context) {
-    print(transactions);
-    return Column(
-      children: transactions.map((trans) {
-        return Container(
-          height: 80,
-          child: Card(
-            child: ListTile(
-              leading: Text("\$" + trans.amount.toString()),
-              title: Text(trans.title),
-              trailing: Icon(Icons.edit),
-              subtitle: Text(Date(trans.date)),
+    return Container(
+      height: 350,
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          return Container(
+            height: 80,
+            child: Card(
+              child: ListTile(
+                minLeadingWidth: 60,
+                leading:
+                    Text("\$" + transactions[index].amount.toStringAsFixed(2)),
+                title: Text(transactions[index].title),
+                trailing: Icon(Icons.edit),
+                subtitle: Text(Date(transactions[index].date)),
+              ),
             ),
-          ),
-        );
-      }).toList(),
+          );
+        },
+        itemCount: transactions.length,
+      ),
     );
   }
 }
