@@ -47,10 +47,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Transaction> userTransaction = [
-    // Transaction(id: "1", title: "Shoes", amount: 69, date: DateTime.now()),
-    // Transaction(id: "2", title: "File", amount: 649, date: DateTime.now()),
-    // Transaction(id: "2", title: "Magic", amount: 79, date: DateTime.now()),
-    // Transaction(id: "3", title: "Pants", amount: 689, date: DateTime.now())
+    Transaction(id: "1", title: "Shoes", amount: 69, date: DateTime.now()),
+    Transaction(id: "2", title: "File", amount: 649, date: DateTime.now()),
+    Transaction(id: "2", title: "Magic", amount: 79, date: DateTime.now()),
+    Transaction(
+        id: "3",
+        title: "Pants",
+        amount: 689,
+        date: DateTime.now().subtract(Duration(days: 1)))
   ];
   void _addNewTransaction(String title, double amount) {
     final newTrans = Transaction(
@@ -102,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               const SizedBox(height: 4),
               Container(
-                child: TransactionChart(),
+                child: TransactionChart(userTransaction: userTransaction),
               ),
               const SizedBox(height: 8),
               // TransactionInput(),
