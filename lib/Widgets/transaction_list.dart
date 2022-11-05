@@ -21,7 +21,15 @@ class TransactionList extends StatelessWidget {
                 minLeadingWidth: 60,
                 leading:
                     Text("\$" + transactions[index].amount.toStringAsFixed(2)),
-                title: Text(transactions[index].title),
+                title: Text(
+                  transactions[index].title,
+                  style: TextStyle(
+                      fontFamily: Theme.of(context)
+                          .appBarTheme
+                          .titleTextStyle
+                          ?.fontFamily,
+                      fontSize: 18),
+                ),
                 trailing: Icon(Icons.edit),
                 subtitle: Text(Date(transactions[index].date)),
               ),

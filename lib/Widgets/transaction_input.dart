@@ -54,6 +54,7 @@ class _TransactionInputState extends State<TransactionInput> {
             ),
             ElevatedButton(
               child: const Text("Add Transaction"),
+              style: ButtonStyle(),
               onPressed: submitData,
             ),
           ],
