@@ -23,7 +23,7 @@ class _TransactionChartState extends State<TransactionChart> {
       "Saturday": 0,
       "Sunday": 0,
     };
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length && i < 10; i++) {
       if (i == 10) {
         break;
       } else {

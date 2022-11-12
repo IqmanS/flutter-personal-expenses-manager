@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:personal_expense/Model/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  TransactionList({Key? key, required this.transactions}) : super(key: key);
+  TransactionList(
+      {Key? key, required this.transactions, required this.deleteTx})
+      : super(key: key);
 
   List<Transaction> transactions;
+  Function deleteTx;
   //TransactionList(this.transactions);
   @override
   Widget build(BuildContext context) {
@@ -19,8 +22,19 @@ class TransactionList extends StatelessWidget {
             child: Card(
               child: ListTile(
                 minLeadingWidth: 60,
-                leading:
-                    Text("\$" + transactions[index].amount.toStringAsFixed(2)),
+                leading: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: FittedBox(
+                      child: Text(
+                        "\$${transactions[index].amount.toStringAsFixed(2)}",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
                 title: Text(
                   transactions[index].title,
                   style: TextStyle(
@@ -30,7 +44,10 @@ class TransactionList extends StatelessWidget {
                           ?.fontFamily,
                       fontSize: 18),
                 ),
-                trailing: Icon(Icons.edit),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => deleteTx(transactions[index].id),
+                ),
                 subtitle: Text(Date(transactions[index].date)),
               ),
             ),
@@ -44,7 +61,6 @@ class TransactionList extends StatelessWidget {
 
 String Date(DateTime dt) {
   String date = "";
-  date =
-      dt.day.toString() + "/" + dt.month.toString() + "/" + dt.year.toString();
+  date = "${dt.day}/${dt.month}/${dt.year}";
   return date;
 }

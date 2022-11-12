@@ -49,22 +49,32 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Transaction> userTransaction = [
     Transaction(id: "1", title: "Shoes", amount: 69, date: DateTime.now()),
     Transaction(id: "2", title: "File", amount: 649, date: DateTime.now()),
-    Transaction(id: "2", title: "Magic", amount: 79, date: DateTime.now()),
+    Transaction(
+        id: "2",
+        title: "Magic",
+        amount: 79,
+        date: DateTime.now().subtract(Duration(days: 2))),
     Transaction(
         id: "3",
         title: "Pants",
         amount: 689,
-        date: DateTime.now().subtract(Duration(days: 1)))
+        date: DateTime.now().subtract(Duration(days: -1)))
   ];
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime choosenDate) {
     final newTrans = Transaction(
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: choosenDate,
       id: DateTime.now().toString(),
     );
     setState(() {
       userTransaction.add(newTrans);
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      userTransaction.removeWhere((element) => element.id == id);
     });
   }
 
@@ -120,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             "assets/undraw_Empty.svg",
                             height: 240,
                           ),
-                          Flexible(
+                          const Flexible(
                             flex: 2,
                             child: Text(
                               "No Expense added",
@@ -132,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     )
                   : TransactionList(
                       transactions: userTransaction,
+                      deleteTx: _deleteTransaction,
                     ),
               //UserTransactions(),
             ],
