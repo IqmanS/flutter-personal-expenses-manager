@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, avoid_print
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, avoid_print, sized_box_for_whitespace, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:personal_expense/Model/transaction.dart';
@@ -13,48 +13,45 @@ class TransactionList extends StatelessWidget {
   //TransactionList(this.transactions);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 410,
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          return Container(
-            height: 80,
-            child: Card(
-              child: ListTile(
-                minLeadingWidth: 60,
-                leading: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 30,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: FittedBox(
-                      child: Text(
-                        "\$${transactions[index].amount.toStringAsFixed(2)}",
-                        style: TextStyle(color: Colors.white),
-                      ),
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return Container(
+          height: 80,
+          child: Card(
+            child: ListTile(
+              minLeadingWidth: 60,
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 30,
+                child: Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: FittedBox(
+                    child: Text(
+                      "\$${transactions[index].amount.toStringAsFixed(2)}",
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
-                title: Text(
-                  transactions[index].title,
-                  style: TextStyle(
-                      fontFamily: Theme.of(context)
-                          .appBarTheme
-                          .titleTextStyle
-                          ?.fontFamily,
-                      fontSize: 18),
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => deleteTx(transactions[index].id),
-                ),
-                subtitle: Text(Date(transactions[index].date)),
               ),
+              title: Text(
+                transactions[index].title,
+                style: TextStyle(
+                    fontFamily: Theme.of(context)
+                        .appBarTheme
+                        .titleTextStyle
+                        ?.fontFamily,
+                    fontSize: 18),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => deleteTx(transactions[index].id),
+              ),
+              subtitle: Text(Date(transactions[index].date)),
             ),
-          );
-        },
-        itemCount: transactions.length,
-      ),
+          ),
+        );
+      },
+      itemCount: transactions.length,
     );
   }
 }

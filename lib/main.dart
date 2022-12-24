@@ -1,3 +1,7 @@
+// ignore_for_file: sized_box_for_whitespace
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -53,12 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
         id: "2",
         title: "Magic",
         amount: 79,
-        date: DateTime.now().subtract(Duration(days: 2))),
+        date: DateTime.now().subtract(const Duration(days: 2))),
     Transaction(
         id: "3",
         title: "Pants",
         amount: 689,
-        date: DateTime.now().subtract(Duration(days: -1)))
+        date: DateTime.now().subtract(const Duration(days: -1)))
   ];
   void _addNewTransaction(String title, double amount, DateTime choosenDate) {
     final newTrans = Transaction(
@@ -91,62 +95,91 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  bool _showChart = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _startAddNewTransaction(context),
-            icon: Icon(Icons.add),
-          )
-        ],
-        elevation: 0,
-        title: const Text(
-          "Personal Expenses",
-        ),
-        centerTitle: true,
+    final bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final appBar = AppBar(
+      actions: <Widget>[
+        IconButton(
+          onPressed: () => _startAddNewTransaction(context),
+          icon: const Icon(Icons.add),
+        )
+      ],
+      elevation: 0,
+      title: const Text(
+        "Personal Expenses",
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+      centerTitle: true,
+    );
+    final txChart = Container(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom) *
+          0.75,
+      child: TransactionChart(userTransaction: userTransaction),
+    );
+    final txList = userTransaction.isEmpty
+        ? Column(
             children: [
-              const SizedBox(height: 4),
+              //Flexible(child: Container(), flex: 1),
+              SvgPicture.asset(
+                "assets/undraw_Empty.svg",
+                height: (MediaQuery.of(context).size.height) * 0.65,
+              ),
+              const Text(
+                "No Expense added",
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          )
+        : Container(
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+            height: (MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom) *
+                0.65,
+            child: TransactionList(
+              transactions: userTransaction,
+              deleteTx: _deleteTransaction,
+            ),
+          );
+    return Scaffold(
+      appBar: appBar,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            if (isLandscape)
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const Text("Show Chart"),
+                Switch(
+                    value: _showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        _showChart = val;
+                      });
+                    })
+              ]),
+            if (isLandscape) _showChart ? txChart : txList,
+            if (!isLandscape)
               Container(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom) *
+                    0.35,
                 child: TransactionChart(userTransaction: userTransaction),
               ),
-              const SizedBox(height: 8),
-              // TransactionInput(),
-              userTransaction.isEmpty
-                  ? Container(
-                      height: 500,
-                      child: Column(
-                        children: [
-                          Flexible(child: Container(), flex: 1),
-                          SvgPicture.asset(
-                            "assets/undraw_Empty.svg",
-                            height: 240,
-                          ),
-                          const Flexible(
-                            flex: 2,
-                            child: Text(
-                              "No Expense added",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : TransactionList(
-                      transactions: userTransaction,
-                      deleteTx: _deleteTransaction,
-                    ),
-              //UserTransactions(),
-            ],
-          ),
+            if (!isLandscape) txList
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(

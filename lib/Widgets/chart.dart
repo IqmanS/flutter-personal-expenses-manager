@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expense/Model/transaction.dart';
@@ -39,13 +43,25 @@ class _TransactionChartState extends State<TransactionChart> {
     final dataMap = transactionToMap(widget.userTransaction);
     print(dataMap);
     return Card(
-      elevation: 7,
-      child: Container(
-        height: 240,
-        width: double.infinity,
-        padding: const EdgeInsets.all(16.0),
-        child: Center(child: PieChart(dataMap: dataMap)),
-      ),
-    );
+        elevation: 7,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: PieChart(
+              chartValuesOptions: ChartValuesOptions(
+                decimalPlaces: 0,
+                showChartValueBackground: true,
+              ),
+              dataMap: dataMap,
+              legendOptions: MediaQuery.of(context).size.height <
+                      MediaQuery.of(context).size.width
+                  ? LegendOptions(
+                      showLegends: false,
+                    )
+                  : LegendOptions(),
+            ),
+          ),
+        ));
   }
 }
