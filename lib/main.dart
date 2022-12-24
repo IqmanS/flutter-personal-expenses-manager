@@ -1,6 +1,5 @@
 // ignore_for_file: sized_box_for_whitespace
-
-import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -176,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (isLandscape)
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 const Text("Show Chart"),
-                Switch(
+                Switch.adaptive(
                     value: _showChart,
                     onChanged: (val) {
                       setState(() {
@@ -186,27 +185,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ]),
             if (isLandscape) _showChart ? txChart : txList,
             if (!isLandscape) txChart,
-            // Container(
-            //   padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
-            //   height: (MediaQuery.of(context).size.height -
-            //           appBar.preferredSize.height -
-            //           MediaQuery.of(context).padding.top -
-            //           MediaQuery.of(context).padding.bottom) *
-            //       0.35,
-            //   child: TransactionChart(userTransaction: userTransaction),
-            // ),
             if (!isLandscape) txList
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey.shade700,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              backgroundColor: Colors.grey.shade700,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () => _startAddNewTransaction(context),
+            ),
       floatingActionButtonLocation: isLandscape
           ? FloatingActionButtonLocation.endFloat
           : FloatingActionButtonLocation.centerFloat,
