@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors, avoid_print, sized_box_for_whitespace, non_constant_identifier_names
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:personal_expense/Model/transaction.dart';
 
@@ -42,10 +44,30 @@ class TransactionList extends StatelessWidget {
                         ?.fontFamily,
                     fontSize: 18),
               ),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => deleteTx(transactions[index].id),
-              ),
+              trailing: MediaQuery.of(context).size.width > 360 ||
+                      MediaQuery.of(context).orientation ==
+                          Orientation.landscape
+                  ? ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Theme.of(context).primaryColor)),
+                      onPressed: () => deleteTx(transactions[index].id),
+                      child: Container(
+                        width:
+                            max(MediaQuery.of(context).size.width * 0.10, 80),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text("Delete"),
+                            const Icon(Icons.delete)
+                          ],
+                        ),
+                      ))
+                  : IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => deleteTx(transactions[index].id),
+                    ),
               subtitle: Text(Date(transactions[index].date)),
             ),
           ),

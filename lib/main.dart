@@ -111,16 +111,25 @@ class _MyHomePageState extends State<MyHomePage> {
       elevation: 0,
       title: const Text(
         "Personal Expenses",
+        style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
     );
     final txChart = Container(
-      padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
-      height: (MediaQuery.of(context).size.height -
-              appBar.preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom) *
-          0.75,
+      padding: isLandscape
+          ? const EdgeInsets.symmetric(vertical: 4, horizontal: 32)
+          : const EdgeInsets.fromLTRB(8, 8, 8, 4),
+      height: isLandscape
+          ? (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom) *
+              0.80
+          : (MediaQuery.of(context).size.height -
+                  appBar.preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom) *
+              0.35,
       child: TransactionChart(userTransaction: userTransaction),
     );
     final txList = userTransaction.isEmpty
@@ -138,12 +147,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           )
         : Container(
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-            height: (MediaQuery.of(context).size.height -
-                    appBar.preferredSize.height -
-                    MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom) *
-                0.65,
+            padding: isLandscape
+                ? const EdgeInsets.symmetric(vertical: 4, horizontal: 32)
+                : const EdgeInsets.fromLTRB(8, 8, 8, 4),
+            height: isLandscape
+                ? (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom) *
+                    0.95
+                : (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom) *
+                    0.65,
             child: TransactionList(
               transactions: userTransaction,
               deleteTx: _deleteTransaction,
@@ -168,16 +185,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     })
               ]),
             if (isLandscape) _showChart ? txChart : txList,
-            if (!isLandscape)
-              Container(
-                padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom) *
-                    0.35,
-                child: TransactionChart(userTransaction: userTransaction),
-              ),
+            if (!isLandscape) txChart,
+            // Container(
+            //   padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+            //   height: (MediaQuery.of(context).size.height -
+            //           appBar.preferredSize.height -
+            //           MediaQuery.of(context).padding.top -
+            //           MediaQuery.of(context).padding.bottom) *
+            //       0.35,
+            //   child: TransactionChart(userTransaction: userTransaction),
+            // ),
             if (!isLandscape) txList
           ],
         ),
@@ -190,7 +207,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onPressed: () => _startAddNewTransaction(context),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: isLandscape
+          ? FloatingActionButtonLocation.endFloat
+          : FloatingActionButtonLocation.centerFloat,
     );
   }
 }
